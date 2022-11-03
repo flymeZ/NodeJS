@@ -37,6 +37,8 @@ function CreateWebsocketClient() {
         });
         client.on('close', function close(code) {
             console.warn('连接断开', code);
+            start_bytes = 0;
+            end_bytes = 0;
             client = null;
             setTimeout(function () {
                 CreateWebsocketClient();
