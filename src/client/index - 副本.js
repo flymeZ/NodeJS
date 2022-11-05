@@ -145,7 +145,11 @@ function handleBinaryMessage(data) {
                     file_info = {};
                 }
             } else {
-                start_bytes += chunkSize;
+                if (start_bytes + chunkSize >= file_info.size) {
+                    start_bytes = end_bytes;
+                } else {
+                    start_bytes += chunkSize;
+                }
                 end_bytes = (start_bytes + chunkSize) >= file_info.size ? file_info.size : start_bytes + chunkSize;
                 // 读取下一个片段
                 sendToServer({

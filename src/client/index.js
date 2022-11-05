@@ -96,7 +96,10 @@ async function handleTextMessage(message) {
                     console.log("服务退出");
                     return;
                 }
-                if (message.start > message.end) return;
+                if (message.start > message.end) {
+                    console.log("分片数据有误，系统退出服务");
+                    return;
+                }
                 let data = Buffer.alloc(0);
                 // /** 读取 100 个字节长的文件的最后 10 个字节的示例：**/
                 // /** fs.createReadStream('sample.txt', { start: 90, end: 99 }) **/;
@@ -173,7 +176,11 @@ function handleBinaryMessage(data) {
                     file_info = {};
                 }
             } else {
-                start_bytes += chunkSize;
+                if (start_bytes + chunkSize >= file_info.size) {
+                    start_bytes = end_bytes;
+                } else {
+                    start_bytes += chunkSize;
+                }
                 end_bytes = (start_bytes + chunkSize) >= file_info.size ? file_info.size : start_bytes + chunkSize;
                 // 读取下一个片段
                 sendToServer({
