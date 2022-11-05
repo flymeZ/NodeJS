@@ -92,7 +92,10 @@ async function handleTextMessage(message) {
                     ...file_info
                 });
             } else if ('transfer' == message.action) {// 传输
-                if (Object.keys(file_info).length == 0) return;
+                if (Object.keys(file_info).length == 0) {
+                    console.log("服务退出");
+                    return;
+                }
                 if (message.start > message.end) return;
                 let data = Buffer.alloc(0);
                 // /** 读取 100 个字节长的文件的最后 10 个字节的示例：**/
